@@ -24,7 +24,7 @@
 .feedback-panel{display:none;margin-top:13px;padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(8,14,26,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.feedback-panel.open{display:block}.feedback-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.feedback-head strong{font-size:10px}.feedback-count{font-size:8px;color:#647087}.feedback-list{display:grid;gap:7px;max-height:290px;overflow:auto}.feedback-item{padding:10px;border-radius:12px;border:1px solid rgba(148,163,184,.07);background:rgba(255,255,255,.018)}.feedback-item-top{display:flex;justify-content:space-between;gap:8px}.feedback-item-top strong{font-size:8.5px}.feedback-time{font-size:7px;color:#5d6b7f}.feedback-item p{margin-top:6px;color:#8693a6;font-size:8.5px;line-height:1.5;white-space:pre-wrap}.feedback-actions{display:flex;justify-content:flex-end;margin-top:6px}.feedback-empty{padding:24px;text-align:center;color:#617087;font-size:8.5px;border:1px dashed rgba(148,163,184,.08);border-radius:12px}
 .guest-mode #addBtn{display:none!important}
 .guest-mode .filters{display:flex!important}
-.guest-mode .hero p:after{content:'  •  Chế độ khách: chỉ xem, copy và gửi feedback.';color:#6d7b90}
+.guest-mode .hero p:after{content:'  •  Welcome!';color:#6d7b90}
 .feedback-compose{width:min(560px,100%)}
 .feedback-compose textarea{min-height:125px}
 
@@ -79,8 +79,8 @@
 </style>
 </head><body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo"><i class="fa-solid fa-box-archive"></i></div><div><h1>Script Vault</h1><p>Your personal script library</p></div></div><div class="top-actions"><span class="role-pill" id="rolePill"><i class="fa-solid fa-user"></i><span>KHÁCH</span></span><button class="icon-btn feedback-btn" id="feedbackBtn" title="Feedback"><i class="fa-regular fa-message"></i><span class="feedback-dot" id="feedbackDot"></span></button><button class="icon-btn" id="themeBtn" title="Theme"><i class="fa-solid fa-palette"></i></button><button class="icon-btn" id="v3SettingsOpen" title="Cài đặt"><i class="fa-solid fa-gear"></i></button><button class="icon-btn" id="settingsBtn" title="Đổi hiệu ứng"><i class="fa-solid fa-wand-magic-sparkles"></i></button><button class="primary-btn" id="addBtn"><i class="fa-solid fa-plus"></i><span>Thêm Script</span></button></div></header>
-<section class="hero"><div class="hero-inner"><div><h2>Lưu mọi thứ.<br><span>Copy trong một chạm.</span></h2><p>Kho script cá nhân với nhiều tab game, tìm kiếm nhanh, yêu thích, sửa/xóa và sao lưu dữ liệu trực tiếp trong trình duyệt.</p></div><div class="stats"><div class="stat"><strong id="total">0</strong><span>TỔNG SCRIPT</span></div><div class="stat"><strong id="favTotal">0</strong><span>YÊU THÍCH</span></div><div class="stat"><strong id="gamesTotal">0</strong><span>GAME</span></div></div></div></section>
+<header class="topbar"><div class="brand"><div class="logo"><i class="fa-solid fa-box-archive"></i></div><div><h1>Script Vault</h1><p>Your personal script library</p></div></div><div class="top-actions"><span class="role-pill" id="rolePill"><i class="fa-solid fa-user"></i><span>Khách</span></span><button class="icon-btn feedback-btn" id="feedbackBtn" title="Feedback"><i class="fa-regular fa-message"></i><span class="feedback-dot" id="feedbackDot"></span></button><button class="icon-btn" id="themeBtn" title="Theme"><i class="fa-solid fa-palette"></i></button><button class="icon-btn" id="v3SettingsOpen" title="Cài đặt"><i class="fa-solid fa-gear"></i></button><button class="icon-btn" id="settingsBtn" title="Đổi hiệu ứng"><i class="fa-solid fa-wand-magic-sparkles"></i></button><button class="primary-btn" id="addBtn"><i class="fa-solid fa-plus"></i><span>Thêm Script</span></button></div></header>
+<section class="hero"><div class="hero-inner"><div><h2>Kho script của MGiacs.<br><span>Copy trong 1 click.</span></h2><p>Kho script mọi game bạn yêu thích.</p></div><div class="stats"><div class="stat"><strong id="total">0</strong><span>SCRIPT</span></div><div class="stat"><strong id="favTotal">0</strong><span>Favourite</span></div><div class="stat"><strong id="gamesTotal">0</strong><span>GAME</span></div></div></div></section>
 <section class="workspace"><aside class="sidebar"><div class="side-title"><strong>Games</strong><span id="sideCount">0</span></div><div class="games" id="games"></div></aside><main><div class="toolbar"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Tìm script, mô tả, tag..."></div><div class="filters"><button class="filter active" data-filter="all">Tất cả</button><button class="filter" data-filter="favorites"><i class="fa-solid fa-star"></i> Yêu thích</button></div></div><div class="grid" id="grid"></div><div class="feedback-panel" id="feedbackPanel">
   <div class="feedback-head"><strong><i class="fa-regular fa-message"></i> Feedback gần đây</strong><span class="feedback-count" id="feedbackCount">0</span></div>
   <div class="feedback-list" id="feedbackList"></div>
@@ -89,12 +89,12 @@
 </main></section></div>
 
 
-<button class="owner-access" id="ownerAccess"><i class="fa-solid fa-crown"></i><span>Mở quyền chủ</span></button>
+<button class="owner-access" id="ownerAccess"><i class="fa-solid fa-crown"></i><span>Cấp quyền</span></button>
 <div class="owner-modal" id="ownerModal">
   <div class="owner-card">
     <div class="owner-icon"><i class="fa-solid fa-crown"></i></div>
     <h3>Kích hoạt quyền chủ</h3>
-    <p>Nhập mật khẩu để mở quyền thêm, sửa, xóa và xem feedback.</p>
+    <p>Nhập mật khẩu để mở quyền .</p>
     <input id="ownerPassword2" type="password" inputmode="numeric" autocomplete="off" placeholder="Mật khẩu chủ">
     <div class="owner-error" id="ownerError"></div>
     <div class="owner-actions">
