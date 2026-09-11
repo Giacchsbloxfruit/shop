@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Script Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#050812;--bg2:#080d19;--panel:rgba(12,19,34,.74);--line:rgba(148,163,184,.11);--text:#f4f7fb;--muted:#8290a6;--accent:#38bdf8;--accent2:#8b5cf6;--accent-rgb:56,189,248;--accent2-rgb:139,92,246;--good:#4ade80;--danger:#fb7185}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{min-height:100vh;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 10% 5%,rgba(var(--accent-rgb),.12),transparent 27%),radial-gradient(circle at 92% 8%,rgba(var(--accent2-rgb),.13),transparent 29%),radial-gradient(circle at 50% 100%,rgba(var(--accent-rgb),.05),transparent 35%),linear-gradient(135deg,var(--bg),var(--bg2));overflow-x:hidden;transition:background .25s ease}body:before,body:after{content:"";position:fixed;pointer-events:none;z-index:-2;border-radius:50%;filter:blur(90px);opacity:.14}body:before{width:300px;height:300px;left:-135px;top:-120px;background:var(--accent)}body:after{width:310px;height:310px;right:-145px;bottom:-140px;background:var(--accent2)}button,input,textarea,select{font:inherit}
+.app{width:min(1480px,calc(100% - 34px));margin:auto;padding:26px 0 70px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:21px}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,rgba(var(--accent-rgb),.25),rgba(var(--accent2-rgb),.23));border:1px solid rgba(var(--accent-rgb),.18);box-shadow:0 10px 28px rgba(var(--accent-rgb),.09),inset 0 1px 0 rgba(255,255,255,.06)}.logo i{font-size:18px}.brand h1{font-size:20px;letter-spacing:-.5px}.brand p{color:#647186;font-size:9px;margin-top:3px}.top-actions{display:flex;gap:8px}.icon-btn,.primary-btn,.secondary-btn{border:1px solid var(--line);color:#cbd5e1;background:rgba(255,255,255,.024);border-radius:11px;cursor:pointer;transition:.16s ease}.icon-btn{width:40px;height:40px;display:grid;place-items:center}.icon-btn:hover,.secondary-btn:hover{color:#fff;border-color:rgba(var(--accent-rgb),.24);background:rgba(var(--accent-rgb),.07)}.primary-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;background:linear-gradient(135deg,rgba(var(--accent-rgb),.16),rgba(var(--accent2-rgb),.14));border-color:rgba(var(--accent-rgb),.22)}.primary-btn:hover{transform:translateY(-1px);box-shadow:0 13px 28px rgba(var(--accent-rgb),.09)}
+.hero{position:relative;overflow:hidden;padding:27px;border-radius:24px;border:1px solid rgba(var(--accent-rgb),.12);background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(var(--accent-rgb),.017),rgba(var(--accent2-rgb),.012)),rgba(8,14,27,.68);box-shadow:0 22px 70px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.045);backdrop-filter:blur(17px) saturate(120%);-webkit-backdrop-filter:blur(17px) saturate(120%);margin-bottom:16px}.hero:before{content:"";position:absolute;width:430px;height:150px;right:-140px;top:-90px;background:radial-gradient(circle,rgba(var(--accent-rgb),.12),transparent 68%);pointer-events:none}.hero-inner{position:relative;display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px}.hero h2{font-size:clamp(27px,4vw,43px);line-height:1;letter-spacing:-1.8px}.hero h2 span{background:linear-gradient(90deg,#fff,var(--accent),#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{margin-top:10px;max-width:720px;color:#768298;font-size:11px;line-height:1.7}.stats{display:flex;gap:7px;flex-wrap:wrap}.stat{min-width:92px;padding:10px 12px;border-radius:13px;border:1px solid rgba(148,163,184,.08);background:rgba(255,255,255,.022)}.stat strong{display:block;font-size:16px}.stat span{font-size:8px;color:#637087}
+.workspace{display:grid;grid-template-columns:225px minmax(0,1fr);gap:15px}.sidebar{position:sticky;top:15px;padding:13px;border-radius:19px;border:1px solid var(--line);background:rgba(8,14,26,.68);box-shadow:0 16px 48px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.035);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.side-title{display:flex;justify-content:space-between;align-items:center;padding:2px 2px 9px}.side-title strong{font-size:10px}.side-title span{font-size:8px;color:#657287}.games{display:flex;flex-direction:column;gap:4px}.game{width:100%;border:1px solid transparent;background:transparent;color:#778397;border-radius:11px;padding:10px;cursor:pointer;text-align:left;transition:.15s ease}.game:hover{background:rgba(255,255,255,.025);color:#cbd5e1}.game.active{color:var(--accent);background:linear-gradient(135deg,rgba(var(--accent-rgb),.105),rgba(var(--accent2-rgb),.045));border-color:rgba(var(--accent-rgb),.11)}.game-row{display:flex;align-items:center;gap:8px}.game-icon{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.03);flex:0 0 28px}.game.active .game-icon{background:rgba(var(--accent-rgb),.10)}.game-name{font-size:9.5px;font-weight:700}.game-count{margin-left:auto;color:#566479;font-size:8px}
+.toolbar{display:flex;gap:9px;align-items:center;margin-bottom:12px}.search{position:relative;flex:1}.search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:10px;color:#58667a}.search input{width:100%;height:41px;padding:0 12px 0 32px;border-radius:12px;border:1px solid var(--line);outline:0;background:rgba(8,14,25,.70);color:#dbe4ef;font-size:10px}.search input:focus{border-color:rgba(var(--accent-rgb),.22);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.04)}.filters{display:flex;gap:6px}.filter{height:41px;padding:0 11px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.022);color:#718096;cursor:pointer;font-size:9px}.filter.active,.filter:hover{color:var(--accent);border-color:rgba(var(--accent-rgb),.18);background:rgba(var(--accent-rgb),.06)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:12px}.card{min-height:211px;position:relative;overflow:hidden;padding:15px;border-radius:17px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.027),rgba(var(--accent-rgb),.012)),rgba(8,14,25,.74);box-shadow:0 14px 38px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.025);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease}.card:hover{transform:translateY(-3px);border-color:rgba(var(--accent-rgb),.15);box-shadow:0 21px 46px rgba(0,0,0,.25),0 0 25px rgba(var(--accent-rgb),.035)}.card:after{content:"";position:absolute;width:90px;height:90px;right:-45px;top:-45px;border-radius:50%;background:rgba(var(--accent-rgb),.055);filter:blur(20px);pointer-events:none}.card-head{display:flex;justify-content:space-between;gap:9px}.main{display:flex;gap:9px;min-width:0}.avatar{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;flex:0 0 35px;color:var(--accent);background:rgba(var(--accent-rgb),.075);border:1px solid rgba(var(--accent-rgb),.09)}.title{font-size:11.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.chip{padding:3.5px 6px;border-radius:999px;border:1px solid rgba(148,163,184,.07);background:rgba(255,255,255,.022);color:#718096;font-size:7.5px;font-weight:700}.chip.good{color:#86efac;background:rgba(74,222,128,.05);border-color:rgba(74,222,128,.08)}.chip.hot{color:#c4b5fd;background:rgba(139,92,246,.05);border-color:rgba(139,92,246,.08)}.star{width:29px;height:29px;border-radius:9px;border:1px solid transparent;background:transparent;color:#536076;cursor:pointer}.star.active,.star:hover{color:#facc15;background:rgba(250,204,21,.055);border-color:rgba(250,204,21,.09)}.desc{margin:11px 0;color:#778498;font-size:9px;line-height:1.55;min-height:29px}.code{position:relative;border:1px solid rgba(148,163,184,.065);border-radius:10px;background:#040810;margin-bottom:10px}.code pre{height:73px;margin:0;padding:10px;overflow:auto;color:#9aabc0;font:8px/1.5 "Cascadia Code",Consolas,monospace;white-space:pre-wrap;word-break:break-word}.copy{position:absolute;right:7px;top:7px;padding:5px 7px;border-radius:7px;border:1px solid rgba(var(--accent-rgb),.12);background:rgba(7,12,23,.82);color:#8e9bae;font-size:7.5px;cursor:pointer}.copy:hover{color:#fff;background:rgba(var(--accent-rgb),.07)}.bottom{display:flex;justify-content:space-between;align-items:center}.mini{height:28px;padding:0 8px;border-radius:8px;border:1px solid rgba(148,163,184,.07);background:rgba(255,255,255,.018);color:#78869a;font-size:8px;cursor:pointer}.mini:hover{color:#e2e8f0;background:rgba(255,255,255,.04)}.mini.danger:hover{color:#fb7185;background:rgba(251,113,133,.04);border-color:rgba(251,113,133,.12)}.updated{font-size:7.5px;color:#4f5d71}
+.empty{grid-column:1/-1;min-height:280px;display:grid;place-items:center;text-align:center;padding:25px;border:1px dashed rgba(148,163,184,.10);border-radius:19px;background:rgba(255,255,255,.010)}.empty-icon{width:55px;height:55px;border-radius:17px;display:grid;place-items:center;margin:0 auto 10px;color:var(--accent);background:rgba(var(--accent-rgb),.065)}.empty h3{font-size:12px}.empty p{margin-top:5px;color:#647087;font-size:8.5px}
+.modal-bg{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:17px;background:rgba(2,6,15,.61);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}.modal-bg.open{display:grid}.modal{width:min(650px,100%);max-height:calc(100vh - 34px);overflow:auto;padding:19px;border-radius:20px;border:1px solid rgba(var(--accent-rgb),.14);background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(var(--accent-rgb),.017)),rgba(9,15,28,.94);box-shadow:0 32px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.045);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:mi .18s ease-out}@keyframes mi{from{opacity:0;transform:translateY(7px) scale(.99)}to{opacity:1;transform:none}}.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px}.modal-head h3{font-size:14px}.modal-head p{font-size:8.5px;color:#657287;margin-top:3px}.close{width:33px;height:33px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:#718096;cursor:pointer}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:8.5px;color:#8290a4;font-weight:700}.field input,.field textarea,.field select{width:100%;border:1px solid rgba(148,163,184,.085);outline:0;border-radius:10px;background:rgba(4,9,18,.64);color:#dbe4ef;padding:9px 10px;font-size:9.5px}.field textarea{min-height:135px;resize:vertical;font:8.5px/1.55 "Cascadia Code",Consolas,monospace}.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(var(--accent-rgb),.22);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.04)}.modal-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:13px}.secondary-btn{padding:9px 11px;font-size:8.5px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,14px);opacity:0;pointer-events:none;z-index:200;display:flex;gap:7px;align-items:center;padding:9px 12px;border-radius:10px;border:1px solid rgba(var(--accent-rgb),.15);background:rgba(8,14,26,.89);box-shadow:0 18px 42px rgba(0,0,0,.38);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);color:#dbeafe;font-size:8.5px;transition:.18s ease}.toast.show{opacity:1;transform:translate(-50%,0)}.toast i{color:var(--good)}
+@media(max-width:930px){.workspace{grid-template-columns:1fr}.sidebar{position:static}.games{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.game{padding:8px}.game-count{display:none}}
+@media(max-width:650px){.app{width:calc(100% - 18px);padding-top:14px}.hero-inner{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand h1{font-size:17px}.primary-btn span{display:none}.games{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column;align-items:stretch}.filters{display:flex}.filter{flex:1}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.grid{grid-template-columns:1fr}}
+
+.role-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;border:1px solid rgba(var(--accent-rgb),.12);background:rgba(var(--accent-rgb),.05);color:var(--accent);font-size:7.5px;font-weight:800;letter-spacing:.4px}
+.feedback-btn{position:relative}.feedback-dot{position:absolute;right:6px;top:6px;width:6px;height:6px;border-radius:50%;background:#fb7185;box-shadow:0 0 7px rgba(251,113,133,.6);display:none}.feedback-dot.show{display:block}
+.feedback-panel{display:none;margin-top:13px;padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(8,14,26,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.feedback-panel.open{display:block}.feedback-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.feedback-head strong{font-size:10px}.feedback-count{font-size:8px;color:#647087}.feedback-list{display:grid;gap:7px;max-height:290px;overflow:auto}.feedback-item{padding:10px;border-radius:12px;border:1px solid rgba(148,163,184,.07);background:rgba(255,255,255,.018)}.feedback-item-top{display:flex;justify-content:space-between;gap:8px}.feedback-item-top strong{font-size:8.5px}.feedback-time{font-size:7px;color:#5d6b7f}.feedback-item p{margin-top:6px;color:#8693a6;font-size:8.5px;line-height:1.5;white-space:pre-wrap}.feedback-actions{display:flex;justify-content:flex-end;margin-top:6px}.feedback-empty{padding:24px;text-align:center;color:#617087;font-size:8.5px;border:1px dashed rgba(148,163,184,.08);border-radius:12px}
+.guest-mode #addBtn{display:none!important}
+.guest-mode .filters{display:flex!important}
+.guest-mode .hero p:after{content:'  •  Welcome!';color:#6d7b90}
+.feedback-compose{width:min(560px,100%)}
+.feedback-compose textarea{min-height:125px}
+
+<style id="v3-css">
+.owner-access{
+  position:fixed;left:16px;bottom:16px;z-index:90;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 12px;border:1px solid rgba(148,163,184,.11);
+  border-radius:11px;background:rgba(8,14,26,.78);
+  color:#8996aa;box-shadow:0 10px 28px rgba(0,0,0,.24);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  cursor:pointer;transition:.18s ease;font-size:8px;font-weight:700
+}.owner-access:hover{color:#dbe6f4;border-color:rgba(var(--accent-rgb),.24);background:rgba(var(--accent-rgb),.055);transform:translateY(-1px)}.owner-access i{color:var(--accent)}
+.owner-modal{position:fixed;inset:0;z-index:120;display:none;place-items:center;padding:18px;background:rgba(2,6,15,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.owner-modal.open{display:grid}.owner-card{width:min(390px,100%);padding:22px;border-radius:21px;border:1px solid rgba(var(--accent-rgb),.15);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(var(--accent-rgb),.018)),rgba(8,14,27,.94);box-shadow:0 30px 90px rgba(0,0,0,.50),inset 0 1px 0 rgba(255,255,255,.05);backdrop-filter:blur(18px) saturate(125%);-webkit-backdrop-filter:blur(18px) saturate(125%)}.owner-icon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:rgba(var(--accent-rgb),.08);color:var(--accent);margin-bottom:12px}.owner-card h3{font-size:14px}.owner-card p{margin-top:5px;color:#68758a;font-size:8.5px;line-height:1.5}.owner-card input{width:100%;height:40px;margin-top:14px;padding:0 11px;border-radius:11px;border:1px solid rgba(148,163,184,.09);outline:0;background:rgba(4,9,18,.62);color:#e2e8f0;font-size:10px}.owner-card input:focus{border-color:rgba(var(--accent-rgb),.23);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.045)}.owner-error{min-height:16px;margin-top:7px;color:#fb7185;font-size:8px}.owner-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:9px}.ghost-btn{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:#8d99ab;cursor:pointer;font-size:9px}
+.cycle-status{position:fixed;right:16px;bottom:16px;z-index:84;pointer-events:none;opacity:0;transform:translateY(7px);padding:7px 10px;border-radius:9px;border:1px solid rgba(var(--accent-rgb),.11);background:rgba(8,14,26,.74);color:#8b98aa;box-shadow:0 10px 28px rgba(0,0,0,.24);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:7.5px;transition:.2s ease}.cycle-status.show{opacity:1;transform:none}
+#fxLayer,#lensWater{position:fixed;inset:0;pointer-events:none;overflow:hidden}#fxLayer{z-index:2;display:none}#lensWater{z-index:3;display:none}.effects-on #fxLayer{display:block}.water-on #lensWater{display:block}
+.rain-drop{position:absolute;top:-60px;width:1px;border-radius:999px;background:linear-gradient(180deg,transparent,rgba(125,211,252,.42));animation:svRain linear infinite}.snow-flake{position:absolute;top:-30px;color:rgba(255,255,255,.60);text-shadow:0 0 7px rgba(255,255,255,.22);animation:svSnow linear infinite}@keyframes svRain{to{transform:translate3d(25px,115vh,0)}}@keyframes svSnow{to{transform:translate3d(45px,115vh,0) rotate(360deg)}}
+.water-drop{position:absolute;width:var(--size);height:calc(var(--size)*1.25);border-radius:55% 45% 52% 48%;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.45),rgba(125,211,252,.07) 40%,rgba(255,255,255,.02) 65%,transparent 72%);border:1px solid rgba(255,255,255,.05);box-shadow:0 0 7px rgba(125,211,252,.03);animation:svWater var(--dur) ease-in-out infinite alternate}@keyframes svWater{to{transform:translate3d(var(--x),var(--y),0) scale(1.02)}}
+.owner-mode .role-pill{color:#86efac!important;border-color:rgba(74,222,128,.20)!important;background:rgba(74,222,128,.04)!important}.guest-mode .role-pill{color:#93c5fd!important;border-color:rgba(56,189,248,.18)!important;background:rgba(56,189,248,.04)!important}.guest-mode .feedback-panel{display:none!important}
+@media(max-width:600px){.owner-access{left:9px;bottom:9px}.cycle-status{right:9px;bottom:9px}}
+
+#v3SettingsPanel{
+  position:fixed;right:16px;top:72px;z-index:88;width:min(365px,calc(100vw - 28px));
+  display:none;padding:16px;border:1px solid rgba(var(--accent-rgb),.13);
+  border-radius:18px;background:rgba(8,14,26,.84);
+  box-shadow:0 22px 60px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px)
+}
+#v3SettingsPanel.open{display:block;animation:v3PanelIn .18s ease-out}
+@keyframes v3PanelIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.v3s-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.v3s-head strong{font-size:11px;color:#e5edf8}.v3s-head span{font-size:7.5px;color:#647186}
+.v3s-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid rgba(148,163,184,.055)}
+.v3s-row label{font-size:9px;color:#8996aa}
+.v3s-row input[type="range"]{width:150px;accent-color:var(--accent)}
+.v3s-row output{width:34px;text-align:right;color:var(--accent);font-size:8px}
+.v3s-row input[type="text"]{
+  width:185px;max-width:58%;height:31px;border-radius:9px;
+  border:1px solid rgba(148,163,184,.09);background:rgba(255,255,255,.025);
+  color:#dbe4ef;outline:none;padding:0 9px;font-size:9px
+}
+.v3s-row input[type="text"]:focus{border-color:rgba(var(--accent-rgb),.22);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.035)}
+.v3s-actions{display:flex;justify-content:flex-end;margin-top:11px}
+.v3s-close{padding:8px 10px;border-radius:9px;border:1px solid rgba(148,163,184,.09);background:rgba(255,255,255,.02);color:#8190a4;cursor:pointer;font-size:8px}
+.v3s-note{margin-top:8px;color:#586579;font-size:7.5px;line-height:1.5}
+
+</style>
+</style><style id="v3-font-scale">
+.brand h1,.brand p,.hero,.sidebar,.toolbar,.card,.feedback-panel,.role-pill,.top-actions{
+  font-size:calc(1em * var(--sv-font-scale,1));
+}
+</style>
+
+<style id="rainbow-theme-addon">
+@property --sv-rainbow-hue{
+  syntax:"<number>";
+  inherits:true;
+  initial-value:200;
+}
+body.sv-rainbow-theme{
+  --accent:hsl(var(--sv-rainbow-hue) 90% 64%);
+  --accent2:hsl(calc(var(--sv-rainbow-hue) + 55) 88% 68%);
+  animation:svRainbowHue 13s linear infinite;
+}
+@keyframes svRainbowHue{
+  to{--sv-rainbow-hue:560}
+}
+body.sv-rainbow-theme .hero h2 span{
+  background:linear-gradient(90deg,
+    #ff5f6d 0%,#ffca58 16%,#55e39a 34%,#56d9ff 52%,
+    #7c83ff 68%,#d77dff 84%,#ff6faf 100%);
+  background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  animation:svRainbowText 7s linear infinite;
+}
+@keyframes svRainbowText{
+  to{background-position:260% 0}
+}
+body.sv-rainbow-theme .logo,
+body.sv-rainbow-theme .game.active,
+body.sv-rainbow-theme .primary-btn{
+  background:linear-gradient(135deg,
+    color-mix(in srgb,#ff5f6d 12%,transparent),
+    color-mix(in srgb,#56d9ff 10%,transparent),
+    color-mix(in srgb,#d77dff 12%,transparent));
+}
+body.sv-rainbow-theme .logo i,
+body.sv-rainbow-theme .avatar,
+body.sv-rainbow-theme .game.active,
+body.sv-rainbow-theme .icon-btn:hover{
+  color:hsl(var(--sv-rainbow-hue) 90% 72%);
+}
+</style>
+
+</head><body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="logo"><i class="fa-solid fa-box-archive"></i></div><div><h1>Script Vault</h1><p>Your personal script library</p></div></div><div class="top-actions"><span class="role-pill" id="rolePill"><i class="fa-solid fa-user"></i><span>Khách</span></span><button class="icon-btn feedback-btn" id="feedbackBtn" title="Feedback"><i class="fa-regular fa-message"></i><span class="feedback-dot" id="feedbackDot"></span></button><button class="icon-btn" id="themeBtn" title="Theme"><i class="fa-solid fa-palette"></i></button><button class="icon-btn" id="v3SettingsOpen" title="Cài đặt"><i class="fa-solid fa-gear"></i></button><button class="icon-btn" id="settingsBtn" title="Đổi hiệu ứng"><i class="fa-solid fa-wand-magic-sparkles"></i></button><button class="primary-btn" id="addBtn"><i class="fa-solid fa-plus"></i><span>Thêm Script</span></button></div></header>
+<section class="hero"><div class="hero-inner"><div><h2>Kho script của MGiacs.<br><span>Copy trong 1 click.</span></h2><p>Kho script mọi game bạn yêu thích.</p></div><div class="stats"><div class="stat"><strong id="total">0</strong><span>SCRIPT</span></div><div class="stat"><strong id="favTotal">0</strong><span>Favourite</span></div><div class="stat"><strong id="gamesTotal">0</strong><span>GAME</span></div></div></div></section>
+<section class="workspace"><aside class="sidebar"><div class="side-title"><strong>Games</strong><span id="sideCount">0</span></div><div class="games" id="games"></div></aside><main><div class="toolbar"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Tìm script, mô tả, tag..."></div><div class="filters"><button class="filter active" data-filter="all">Tất cả</button><button class="filter" data-filter="favorites"><i class="fa-solid fa-star"></i> Yêu thích</button></div></div><div class="grid" id="grid"></div><div class="feedback-panel" id="feedbackPanel">
+  <div class="feedback-head"><strong><i class="fa-regular fa-message"></i> Feedback gần đây</strong><span class="feedback-count" id="feedbackCount">0</span></div>
+  <div class="feedback-list" id="feedbackList"></div>
+  
+</div>
+</main></section></div>
+
+
+<button class="owner-access" id="ownerAccess"><i class="fa-solid fa-crown"></i><span>Cấp quyền</span></button>
+<div class="owner-modal" id="ownerModal">
+  <div class="owner-card">
+    <div class="owner-icon"><i class="fa-solid fa-crown"></i></div>
+    <h3>Kích hoạt quyền chủ</h3>
+    <p>Nhập mật khẩu để mở quyền .</p>
+    <input id="ownerPassword2" type="password" inputmode="numeric" autocomplete="off" placeholder="Mật khẩu chủ">
+    <div class="owner-error" id="ownerError"></div>
+    <div class="owner-actions">
+      <button class="ghost-btn" id="ownerCancel">Hủy</button>
+      <button class="primary-btn" id="ownerLogin2"><i class="fa-solid fa-unlock-keyhole"></i> Mở quyền</button>
+    </div>
+  </div>
+</div>
+<div class="cycle-status" id="cycleStatus"></div>
+<div id="fxLayer"></div><div id="lensWater"></div>
+<div class="modal-bg" id="feedbackBg"><div class="modal feedback-compose">
+  <div class="modal-head"><div><h3 id="feedbackTitle">Gửi Feedback</h3><p>Feedback sẽ tự xóa sau 7 ngày.</p></div><button class="close" id="feedbackClose"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="field"><label>Loại feedback</label><select id="feedbackType"><option value="Bug">🐛 Lỗi / Bug</option><option value="Suggest">💡 Góp ý</option><option value="Request">✨ Yêu cầu script</option><option value="Other">💬 Khác</option></select></div>
+  <div class="field" style="margin-top:10px"><label>Nội dung</label><textarea id="feedbackMessage" maxlength="1000" placeholder="Nói cho chủ web biết bạn gặp gì..."></textarea></div>
+  <div class="modal-actions"><button class="secondary-btn" id="feedbackCancel">Hủy</button><button class="primary-btn" id="feedbackSend"><i class="fa-solid fa-paper-plane"></i> Gửi Feedback</button></div>
+</div></div>
+
+<div class="modal-bg" id="modalBg"><div class="modal"><div class="modal-head"><div><h3 id="modalTitle">Thêm Script</h3><p>Lưu trực tiếp trong trình duyệt.</p></div><button class="close" id="close"><i class="fa-solid fa-xmark"></i></button></div><form id="form"><input id="editId" type="hidden"><div class="form"><div class="field"><label>Tên script</label><input id="name" required maxlength="80" placeholder="Ví dụ: Auto Farm"></div><div class="field"><label>Game</label><select id="game"></select></div><div class="field"><label>Tag</label><input id="tag" maxlength="30" placeholder="Farm / UI / Utility"></div><div class="field"><label>Trạng thái</label><select id="status"><option>Working</option><option>Beta</option><option>Private</option></select></div><div class="field full"><label>Mô tả</label><input id="desc" maxlength="160" placeholder="Mô tả ngắn"></div><div class="field full"><label>Code</label><textarea id="code" required placeholder="// Dán code của bạn vào đây..."></textarea></div></div><div class="modal-actions"><button type="button" class="secondary-btn" id="cancel">Hủy</button><button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Lưu Script</button></div></form></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-check"></i><span></span></div>
+<script>
+
+(()=>{
+const KEY='script_vault_store_v1',THEME='script_vault_theme_v1',FEEDBACK='script_vault_feedback_v1',FX='script_vault_fx_v3';
+const OWNER_PASSWORD='25032010';
+const games=[['blox','Blox Fruits','fa-water'],['doors','DOORS','fa-door-open'],['arsenal','Arsenal','fa-crosshairs'],['mm2','Murder Mystery 2','fa-mask-face'],['other','Khác','fa-layer-group']];
+const demo=[
+{id:'d1',game:'blox',name:'Demo — Auto Farm',tag:'Farm',status:'Working',favorite:true,description:'Mục mẫu — thay bằng script của bạn.',code:"-- DÁN CODE CỦA BẠN VÀO ĐÂY\nprint('Auto Farm Demo')",updated:Date.now()},
+{id:'d2',game:'blox',name:'Demo — Utility',tag:'Utility',status:'Beta',favorite:false,description:'Mục mẫu thứ hai để xem giao diện.',code:"-- Utility demo\nprint('Utility Demo')",updated:Date.now()},
+{id:'d3',game:'doors',name:'Demo — UI Helper',tag:'UI',status:'Working',favorite:false,description:'Ví dụ script ở game khác.',code:"-- UI demo\nprint('UI Helper Demo')",updated:Date.now()}];
+const themes=[['#38bdf8','#8b5cf6','Cyan'],['#a78bfa','#ec4899','Violet'],['#4ade80','#22d3ee','Green'],['#fb923c','#facc15','Orange'],['#fb7185','#c084fc','Rose']];
+const effects=['none','rain','snow','water'];
+let role='guest';
+let data={scripts:[],selected:'blox',query:'',filter:'all',edit:null};
+const $=id=>document.getElementById(id),gs=id=>games.find(x=>x[0]===id)||games.at(-1);
+function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+function save(){localStorage.setItem(KEY,JSON.stringify({scripts:data.scripts}))}
+function feedbackLoad(){try{const x=JSON.parse(localStorage.getItem(FEEDBACK));return Array.isArray(x)?x:[]}catch{return[]}}
+function feedbackSave(a){localStorage.setItem(FEEDBACK,JSON.stringify(a))}
+function cleanupFeedback(){const cut=Date.now()-7*24*60*60*1000;const a=feedbackLoad().filter(x=>Number(x.createdAt)>cut);feedbackSave(a);return a}
+function theme(a,b,notify=true){const n=s=>{const x=parseInt(s.slice(1),16);return `${x>>16},${(x>>8)&255},${x&255}`};document.documentElement.style.setProperty('--accent',a);document.documentElement.style.setProperty('--accent2',b);document.documentElement.style.setProperty('--accent-rgb',n(a));document.documentElement.style.setProperty('--accent2-rgb',n(b));localStorage.setItem(THEME,JSON.stringify({a,b}));if(notify)showCycle('Màu: '+(themes.find(x=>x[0]===a)?.[2]||'Tùy chỉnh'))}
+function themeIndex(){try{const t=JSON.parse(localStorage.getItem(THEME)||'{}');const i=themes.findIndex(x=>x[0]===t.a&&x[1]===t.b);return i<0?0:i}catch{return 0}}
+function cycleTheme(){const i=(themeIndex()+1)%themes.length;theme(...themes[i].slice(0,2),true)}
+function effect(){return localStorage.getItem(FX)||'none'}
+function effectLabel(e){return e==='rain'?'Mưa':e==='snow'?'Tuyết':e==='water'?'Nước ống kính':'Tắt'}
+function clearFX(){if($('fxLayer'))$('fxLayer').innerHTML='';if($('lensWater'))$('lensWater').innerHTML=''}
+function buildFX(e){clearFX();if(e==='rain'){const l=$('fxLayer');for(let i=0;i<34;i++){const d=document.createElement('i');d.className='rain-drop';d.style.left=Math.random()*100+'%';d.style.height=25+Math.random()*50+'px';d.style.opacity=(.13+Math.random()*.3).toFixed(2);d.style.animationDuration=(.75+Math.random()*.75)+'s';d.style.animationDelay=(-Math.random()*2)+'s';l.appendChild(d)}}else if(e==='snow'){const l=$('fxLayer');for(let i=0;i<22;i++){const d=document.createElement('i');d.className='snow-flake';d.textContent='✦';d.style.left=Math.random()*100+'%';d.style.fontSize=8+Math.random()*10+'px';d.style.opacity=(.18+Math.random()*.45).toFixed(2);d.style.animationDuration=(5+Math.random()*6)+'s';d.style.animationDelay=(-Math.random()*8)+'s';l.appendChild(d)}}else if(e==='water'){const l=$('lensWater');for(let i=0;i<12;i++){const d=document.createElement('i');d.className='water-drop';d.style.left=Math.random()*96+'%';d.style.top=Math.random()*92+'%';d.style.setProperty('--size',12+Math.random()*20+'px');d.style.setProperty('--x',-6+Math.random()*12+'px');d.style.setProperty('--y',-5+Math.random()*10+'px');d.style.setProperty('--dur',3.2+Math.random()*2.6+'s');l.appendChild(d)}}}
+function applyFX(e,notify=true){if(!effects.includes(e))e='none';localStorage.setItem(FX,e);document.body.classList.toggle('effects-on',e==='rain'||e==='snow');document.body.classList.toggle('water-on',e==='water');buildFX(e);if(notify)showCycle('Hiệu ứng: '+effectLabel(e))}
+function cycleEffect(){const i=effects.indexOf(effect());applyFX(effects[(i<0?0:i+1)%effects.length],true)}
+function showCycle(msg){const el=$('cycleStatus');if(!el)return;el.textContent=msg;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');clearTimeout(window.__svCycle);window.__svCycle=setTimeout(()=>el.classList.remove('show'),1300)}
+function setRole(next){role=next==='owner'?'owner':'guest';document.body.classList.toggle('owner-mode',role==='owner');document.body.classList.toggle('guest-mode',role==='guest');const pill=$('rolePill');if(pill)pill.innerHTML=role==='owner'?'<i class="fa-solid fa-crown"></i><span>CHỦ</span>':'<i class="fa-solid fa-user"></i><span>KHÁCH</span>';if($('ownerAccess'))$('ownerAccess').style.display=role==='owner'?'none':'inline-flex';if($('addBtn'))$('addBtn').style.display=role==='owner'?'inline-flex':'none';if(role!=='owner')$('feedbackPanel').classList.remove('open');render()}
+function openOwnerModal(){$('ownerModal').classList.add('open');$('ownerError').textContent='';$('ownerPassword2').value='';setTimeout(()=>$('ownerPassword2').focus(),30)}
+function closeOwnerModal(){$('ownerModal').classList.remove('open')}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));data.scripts=Array.isArray(x?.scripts)?x.scripts:demo}catch{data.scripts=demo}try{const t=JSON.parse(localStorage.getItem(THEME)||'{}');if(t.a&&t.b)theme(t.a,t.b,false)}catch{}cleanupFeedback();applyFX(effect(),false);setRole('guest')}
+function stats(){$('total').textContent=data.scripts.length;$('favTotal').textContent=data.scripts.filter(x=>x.favorite).length;$('gamesTotal').textContent=games.length;$('sideCount').textContent=games.length}
+function render(){stats();tabs();gameSelect();cards();renderFeedback();updateFeedbackDot();if($('addBtn'))$('addBtn').style.display=role==='owner'?'inline-flex':'none'}
+function tabs(){$('games').innerHTML='<button class="game '+(data.selected==='all'?'active':'')+'" data-g="all"><div class="game-row"><div class="game-icon"><i class="fa-solid fa-border-all"></i></div><span class="game-name">Tất cả</span><span class="game-count">'+data.scripts.length+'</span></div></button>'+games.map(g=>{let c=data.scripts.filter(x=>x.game===g[0]).length;return `<button class="game ${data.selected===g[0]?'active':''}" data-g="${g[0]}"><div class="game-row"><div class="game-icon"><i class="fa-solid ${g[2]}"></i></div><span class="game-name">${esc(g[1])}</span><span class="game-count">${c}</span></div></button>`}).join('');document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{data.selected=b.dataset.g;tabs();cards()})}
+function gameSelect(){$('game').innerHTML=games.map(g=>`<option value="${g[0]}">${esc(g[1])}</option>`).join('')}
+function filtered(){let q=data.query.toLowerCase().trim();return data.scripts.filter(s=>(data.selected==='all'||s.game===data.selected)&&(data.filter!=='favorites'||s.favorite)&&(!q||[s.name,s.description,s.tag,s.status,gs(s.game)[1]].join(' ').toLowerCase().includes(q))).sort((a,b)=>Number(b.favorite)-Number(a.favorite)||b.updated-a.updated)}
+function cards(){let arr=filtered();if(!arr.length){$('grid').innerHTML='<div class="empty"><div><div class="empty-icon"><i class="fa-solid fa-box-open"></i></div><h3>Chưa có script phù hợp</h3><p>Đổi tab hoặc tìm kiếm lại.</p></div></div>';return}$('grid').innerHTML=arr.map(s=>{let g=gs(s.game);return `<article class="card"><div class="card-head"><div class="main"><div class="avatar"><i class="fa-solid ${g[2]}"></i></div><div style="min-width:0"><div class="title" title="${esc(s.name)}">${esc(s.name)}</div><div class="meta"><span class="chip"><i class="fa-solid fa-gamepad"></i> ${esc(g[1])}</span>${s.tag?`<span class="chip hot">${esc(s.tag)}</span>`:''}<span class="chip ${s.status==='Working'?'good':''}">${esc(s.status)}</span></div></div></div><button class="star ${s.favorite?'active':''}" data-a="fav" data-id="${s.id}"><i class="${s.favorite?'fa-solid':'fa-regular'} fa-star"></i></button></div><div class="desc">${esc(s.description||'Không có mô tả.')}</div><div class="code"><pre>${esc(s.code)}</pre><button class="copy" data-a="copy" data-id="${s.id}"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="bottom"><div><button class="mini" data-a="edit" data-id="${s.id}"><i class="fa-solid fa-pen"></i> Sửa</button> <button class="mini danger" data-a="del" data-id="${s.id}"><i class="fa-regular fa-trash-can"></i> Xóa</button></div><span class="updated">${ago(s.updated)}</span></div></article>`}).join('');document.querySelectorAll('[data-a]').forEach(b=>b.onclick=action);if(role==='guest')document.querySelectorAll('[data-a="copy"]').forEach(b=>b.title='Copy script')}
+async function action(e){let b=e.currentTarget,s=data.scripts.find(x=>x.id===b.dataset.id);if(!s)return;let a=b.dataset.a;if(a==='fav'){s.favorite=!s.favorite;s.updated=Date.now();save();render();toast(s.favorite?'Đã thêm yêu thích':'Đã bỏ yêu thích')}else if(a==='copy'){try{await navigator.clipboard.writeText(s.code)}catch{let t=document.createElement('textarea');t.value=s.code;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}toast('Đã copy script')}else if(a==='edit'){if(role==='owner')open(s)}else if(a==='del'&&role==='owner'&&confirm(`Xóa "${s.name}"?`)){data.scripts=data.scripts.filter(x=>x.id!==s.id);save();if(window.__scriptVaultSyncShared)window.__scriptVaultSyncShared();render();toast('Đã xóa script')}}
+function open(s=null){if(role!=='owner')return;data.edit=s?.id||null;$('modalTitle').textContent=s?'Sửa Script':'Thêm Script';$('editId').value=s?.id||'';$('name').value=s?.name||'';$('game').value=s?.game||(data.selected!=='all'?data.selected:'blox');$('tag').value=s?.tag||'';$('status').value=s?.status||'Working';$('desc').value=s?.description||'';$('code').value=s?.code||'';$('modalBg').classList.add('open');setTimeout(()=>$('name').focus(),20)}
+function close(){$('modalBg').classList.remove('open');data.edit=null;$('form').reset()}
+$('addBtn').onclick=()=>open();$('close').onclick=close;$('cancel').onclick=close;$('modalBg').onclick=e=>{if(e.target===$('modalBg'))close()};document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();closeFeedback()}});
+$('form').onsubmit=e=>{e.preventDefault();if(role!=='owner')return;let p={name:$('name').value.trim(),game:$('game').value,tag:$('tag').value.trim(),status:$('status').value,description:$('desc').value.trim(),code:$('code').value,updated:Date.now()};if(!p.name||!p.code)return;if(data.edit){let s=data.scripts.find(x=>x.id===data.edit);Object.assign(s,p);toast('Đã cập nhật script')}else{data.scripts.unshift({id:(crypto.randomUUID?.()||Date.now()+Math.random()),favorite:false,...p});toast('Đã thêm script')}save();if(window.__scriptVaultSyncShared)window.__scriptVaultSyncShared();close();render()};
+$('search').oninput=e=>{data.query=e.target.value;cards()};document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');data.filter=b.dataset.filter;cards()});
+$('settingsBtn').onclick=cycleEffect;
+$('themeBtn').onclick=cycleTheme;
+function ago(ts){let d=Date.now()-ts;if(d<6e4)return'vừa xong';if(d<36e5)return Math.floor(d/6e4)+' phút';if(d<864e5)return Math.floor(d/36e5)+' giờ';return Math.floor(d/864e5)+' ngày'}let tt;function toast(m){clearTimeout(tt);$('toast').querySelector('span').textContent=m;$('toast').classList.add('show');tt=setTimeout(()=>$('toast').classList.remove('show'),1600)}
+
+$('ownerAccess').onclick=openOwnerModal;$('ownerCancel').onclick=closeOwnerModal;$('ownerModal').onclick=e=>{if(e.target===$('ownerModal'))closeOwnerModal()};$('ownerPassword2').addEventListener('keydown',e=>{if(e.key==='Enter')$('ownerLogin2').click()});$('ownerLogin2').onclick=()=>{if($('ownerPassword2').value===OWNER_PASSWORD){closeOwnerModal();setRole('owner');toast('Đã mở quyền chủ')}else{$('ownerError').textContent='Sai mật khẩu. Trang sẽ tải lại...';setTimeout(()=>location.reload(),650)}};
+// Feedback UI
+function openFeedback(){cleanupFeedback();$('feedbackBg').classList.add('open');setTimeout(()=>$('feedbackMessage').focus(),30)}
+function closeFeedback(){$('feedbackBg').classList.remove('open');$('feedbackMessage').value=''}
+$('feedbackBtn').onclick=()=>{if(role==='owner'){$('feedbackPanel').classList.toggle('open');renderFeedback();updateFeedbackDot()}else openFeedback()};
+$('feedbackSend').onclick=()=>{const msg=$('feedbackMessage').value.trim();if(msg.length<3){toast('Feedback quá ngắn');return}const arr=cleanupFeedback();arr.unshift({id:(crypto.randomUUID?.()||Date.now()+Math.random()),type:$('feedbackType').value,message:msg,createdAt:Date.now()});feedbackSave(arr);closeFeedback();renderFeedback();updateFeedbackDot();toast('Đã gửi feedback')};
+function renderFeedback(){if(role!=='owner'){ $('feedbackPanel').classList.remove('open');return }const arr=cleanupFeedback();$('feedbackCount').textContent=arr.length;$('feedbackList').innerHTML=arr.length?arr.map(f=>`<div class="feedback-item"><div class="feedback-item-top"><strong>${esc(f.type)}</strong><span class="feedback-time">${ago(f.createdAt)}</span></div><p>${esc(f.message)}</p><div class="feedback-actions"><button class="mini danger" data-fdel="${f.id}"><i class="fa-regular fa-trash-can"></i> Xóa</button></div></div>`).join(''):'<div class="feedback-empty">Chưa có feedback nào trong 7 ngày gần đây.</div>';document.querySelectorAll('[data-fdel]').forEach(b=>b.onclick=()=>{const left=cleanupFeedback().filter(x=>x.id!==b.dataset.fdel);feedbackSave(left);renderFeedback();updateFeedbackDot();toast('Đã xóa feedback')})}
+function updateFeedbackDot(){const count=cleanupFeedback().length;const dot=$('feedbackDot');if(dot)dot.classList.toggle('show',role==='owner'&&count>0)}
+
+// Owner can open inbox with one click while guest always opens feedback compose.
+$('feedbackBtn').onclick=()=>{if(role==='owner')$('feedbackPanel').classList.toggle('open');else openFeedback();renderFeedback();updateFeedbackDot()};
+
+
+// V3 settings panel
+const v3Settings = $('v3SettingsPanel');
+const v3Font = $('v3FontSize');
+const v3FontOut = $('v3FontSizeOut');
+const v3Title = $('v3Title');
+const v3Subtitle = $('v3Subtitle');
+
+function loadV3Settings(){
+  try{
+    const s = JSON.parse(localStorage.getItem('script_vault_ui_v3') || '{}');
+    const size = Math.min(115, Math.max(90, Number(s.fontSize) || 100));
+    document.documentElement.style.setProperty('--sv-font-scale', String(size / 100));
+    if(v3Font) v3Font.value = size;
+    if(v3FontOut) v3FontOut.value = size + '%';
+
+    const title = s.title || 'Script Vault';
+    const subtitle = s.subtitle || 'Your personal script library';
+    if(v3Title) v3Title.value = title;
+    if(v3Subtitle) v3Subtitle.value = subtitle;
+
+    const brandTitle = document.querySelector('.brand h1');
+    const brandSubtitle = document.querySelector('.brand p');
+    if(brandTitle) brandTitle.textContent = title;
+    if(brandSubtitle) brandSubtitle.textContent = subtitle;
+  }catch{}
+}
+function saveV3Settings(){
+  localStorage.setItem('script_vault_ui_v3', JSON.stringify({
+    fontSize: Number(v3Font?.value || 100),
+    title: v3Title?.value || 'Script Vault',
+    subtitle: v3Subtitle?.value || 'Your personal script library'
+  }));
+}
+function applyV3Font(){
+  const size = Number(v3Font?.value || 100);
+  document.documentElement.style.setProperty('--sv-font-scale', String(size / 100));
+  if(v3FontOut) v3FontOut.value = size + '%';
+  document.body.style.fontSize = (size / 100) + 'em';
+  saveV3Settings();
+}
+v3Font?.addEventListener('input', applyV3Font);
+v3Title?.addEventListener('input', ()=>{
+  const el = document.querySelector('.brand h1');
+  if(el) el.textContent = v3Title.value || 'Script Vault';
+  saveV3Settings();
+});
+v3Subtitle?.addEventListener('input', ()=>{
+  const el = document.querySelector('.brand p');
+  if(el) el.textContent = v3Subtitle.value || 'Your personal script library';
+  saveV3Settings();
+});
+$('v3SettingsOpen')?.addEventListener('click', ()=>{
+  v3Settings?.classList.toggle('open');
+});
+$('v3SettingsClose')?.addEventListener('click', ()=>{
+  v3Settings?.classList.remove('open');
+});
+document.addEventListener('click', e=>{
+  if(!v3Settings || !v3Settings.classList.contains('open')) return;
+  if(e.target.closest('#v3SettingsPanel') || e.target.closest('#v3SettingsOpen')) return;
+  v3Settings.classList.remove('open');
+});
+loadV3Settings();
+
+load();
+
+})();
+
+</script>
+<div id="v3SettingsPanel">
+  <div class="v3s-head">
+    <strong><i class="fa-solid fa-gear"></i> Cài đặt</strong>
+    <span>Tự lưu</span>
+  </div>
+  <div class="v3s-row">
+    <label>Kích cỡ chữ</label>
+    <div style="display:flex;align-items:center;gap:8px">
+      <input id="v3FontSize" type="range" min="90" max="115" value="100">
+      <output id="v3FontSizeOut">100%</output>
+    </div>
+  </div>
+  <div class="v3s-row">
+    <label>Tiêu đề</label>
+    <input id="v3Title" type="text" maxlength="60" value="Script Vault">
+  </div>
+  <div class="v3s-row">
+    <label>Phụ đề</label>
+    <input id="v3Subtitle" type="text" maxlength="90" value="Your personal script library">
+  </div>
+  <div class="v3s-actions">
+    <button class="v3s-close" id="v3SettingsClose"><i class="fa-solid fa-xmark"></i> Đóng</button>
+  </div>
+  <div class="v3s-note">Theme vẫn đổi bằng palette, hiệu ứng vẫn đổi bằng đũa phép. Các cài đặt chữ được lưu cho lần mở sau.</div>
+</div>
+
+
+<script id="shared-script-rainbow-addon">
+(() => {
+  const SHARED_URL = "https://blox-tracker-default-rtdb.firebaseio.com/scriptVault/scripts.json";
+  const SHARED_STREAM = SHARED_URL;
+  const SHARED_POLL_MS = 7000;
+  const RAINBOW_KEY = "script_vault_rainbow_v1";
+  const themeButton = document.getElementById("themeBtn");
+
+  // ---------- Rainbow theme ----------
+  const rainbowThemes = [
+    ["#38bdf8","#8b5cf6","Cyan"],
+    ["#a78bfa","#ec4899","Violet"],
+    ["#4ade80","#22d3ee","Green"],
+    ["#fb923c","#facc15","Orange"],
+    ["#fb7185","#c084fc","Rose"],
+    ["rainbow","rainbow","Rainbow"]
+  ];
+
+  function oldThemeIndex(){
+    try{
+      const raw = JSON.parse(localStorage.getItem("script_vault_theme_v1") || "{}");
+      const pairs = [
+        ["#38bdf8","#8b5cf6"],
+        ["#a78bfa","#ec4899"],
+        ["#4ade80","#22d3ee"],
+        ["#fb923c","#facc15"],
+        ["#fb7185","#c084fc"]
+      ];
+      const i = pairs.findIndex(([a,b]) => a.toLowerCase() === String(raw.a||"").toLowerCase() && b.toLowerCase() === String(raw.b||"").toLowerCase());
+      return i >= 0 ? i : 0;
+    }catch{return 0}
+  }
+
+  function applyRainbow(index, announce=true){
+    index = ((index % rainbowThemes.length) + rainbowThemes.length) % rainbowThemes.length;
+    const item = rainbowThemes[index];
+
+    if(index === 5){
+      document.body.classList.add("sv-rainbow-theme");
+      localStorage.setItem(RAINBOW_KEY, "5");
+      localStorage.setItem("script_vault_theme_v1", JSON.stringify({a:"#38bdf8",b:"#8b5cf6"}));
+      if(announce && typeof showCycle === "function") showCycle("Màu: Rainbow");
+      return;
+    }
+
+    document.body.classList.remove("sv-rainbow-theme");
+    const [a,b,name] = item;
+    const n = s => {
+      const x = parseInt(s.slice(1),16);
+      return `${x>>16},${(x>>8)&255},${x&255}`;
+    };
+    document.documentElement.style.setProperty("--accent",a);
+    document.documentElement.style.setProperty("--accent2",b);
+    document.documentElement.style.setProperty("--accent-rgb",n(a));
+    document.documentElement.style.setProperty("--accent2-rgb",n(b));
+    localStorage.setItem("script_vault_theme_v1", JSON.stringify({a,b}));
+    localStorage.setItem(RAINBOW_KEY, String(index));
+    if(announce && typeof showCycle === "function") showCycle("Màu: "+name);
+  }
+
+  function currentTheme(){
+    const saved = localStorage.getItem(RAINBOW_KEY);
+    if(saved !== null){
+      const i = Number(saved);
+      if(Number.isFinite(i)) return ((i % rainbowThemes.length) + rainbowThemes.length) % rainbowThemes.length;
+    }
+    return oldThemeIndex();
+  }
+
+  function cycleRainbowTheme(){
+    applyRainbow(currentTheme()+1, true);
+  }
+
+  if(themeButton) themeButton.onclick = cycleRainbowTheme;
+
+  const savedTheme = currentTheme();
+  applyRainbow(savedTheme, false);
+
+  // ---------- Shared script database ----------
+  // The existing app keeps favorites locally. This addon only synchronizes
+  // script content/metadata, then merges local favorite flags back in.
+  const localStoreKey = "script_vault_store_v1";
+  let syncBusy = false;
+  let remoteReady = false;
+  let eventSource = null;
+  let lastRemoteSignature = "";
+
+  function readLocalScripts(){
+    try{
+      const raw = JSON.parse(localStorage.getItem(localStoreKey) || "{}");
+      return Array.isArray(raw.scripts) ? raw.scripts : [];
+    }catch{
+      return [];
+    }
+  }
+
+  function writeLocalScripts(scripts){
+    localStorage.setItem(localStoreKey, JSON.stringify({scripts}));
+  }
+
+  function mergeFavorites(remoteScripts){
+    const local = readLocalScripts();
+    const fav = new Map(local.map(s => [String(s.id), !!s.favorite]));
+    return remoteScripts.map(s => ({
+      ...s,
+      favorite: fav.has(String(s.id)) ? fav.get(String(s.id)) : !!s.favorite
+    }));
+  }
+
+  async function fetchSharedScripts(){
+    const res = await fetch(SHARED_URL, {
+      method:"GET",
+      cache:"no-store",
+      headers:{"Accept":"application/json"}
+    });
+    if(!res.ok) throw new Error("Firebase GET "+res.status);
+    const json = await res.json();
+    if(json === null) return null;
+    if(Array.isArray(json)) return json;
+    if(json && typeof json === "object") return Object.values(json);
+    return [];
+  }
+
+  async function pushSharedScripts(scripts){
+    const payload = JSON.stringify(scripts);
+    if(payload === lastRemoteSignature) return true;
+
+    const res = await fetch(SHARED_URL, {
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:payload,
+      cache:"no-store"
+    });
+    if(!res.ok) throw new Error("Firebase PUT "+res.status);
+    lastRemoteSignature = payload;
+    return true;
+  }
+
+  function installRemoteScripts(remoteScripts){
+    if(!Array.isArray(remoteScripts)) return;
+
+    const merged = mergeFavorites(remoteScripts);
+    writeLocalScripts(merged);
+
+    // Keep the existing page state in sync without changing the old renderer.
+    if(typeof data !== "undefined" && data){
+      data.scripts = merged;
+      remoteReady = true;
+      if(typeof render === "function") render();
+    }
+  }
+
+  async function initialSharedLoad(){
+    try{
+      const remote = await fetchSharedScripts();
+
+      // If the shared DB is empty, seed it ONCE from the existing local library.
+      // This preserves the current user's scripts and then makes them shared.
+      if(remote === null){
+        const local = readLocalScripts();
+        if(local.length){
+          await pushSharedScripts(local);
+          installRemoteScripts(local);
+        }
+      }else{
+        installRemoteScripts(remote);
+      }
+    }catch(err){
+      console.warn("Shared Script Vault unavailable; keeping local data.", err);
+      if(typeof render === "function") render();
+    }
+  }
+
+  function startRealtimeStream(){
+    if(typeof EventSource === "undefined") return;
+
+    try{
+      eventSource = new EventSource(SHARED_STREAM);
+      eventSource.addEventListener("put", ev => handleRemoteEvent(ev));
+      eventSource.addEventListener("patch", ev => handleRemoteEvent(ev));
+      eventSource.onerror = () => {
+        // Browser will automatically retry the EventSource connection.
+      };
+    }catch(err){
+      console.warn("Firebase realtime stream unavailable.", err);
+    }
+  }
+
+  function handleRemoteEvent(ev){
+    try{
+      const payload = JSON.parse(ev.data);
+      const incoming = payload && payload.data;
+
+      if(incoming === null){
+        if(typeof data !== "undefined" && data){
+          data.scripts = [];
+          writeLocalScripts([]);
+          if(typeof render === "function") render();
+        }
+        return;
+      }
+
+      // Full root update.
+      if(payload && payload.path === "/" && Array.isArray(incoming)){
+        installRemoteScripts(incoming);
+        return;
+      }
+
+      // Object/patch-style payload.
+      if(payload && payload.path && typeof data !== "undefined"){
+        fetchSharedScripts().then(remote => {
+          if(remote) installRemoteScripts(remote);
+        }).catch(()=>{});
+      }
+    }catch{}
+  }
+
+  async function pollShared(){
+    if(syncBusy) return;
+    try{
+      const remote = await fetchSharedScripts();
+      if(remote === null) return;
+
+      const signature = JSON.stringify(remote);
+      if(signature !== lastRemoteSignature){
+        lastRemoteSignature = signature;
+        installRemoteScripts(remote);
+      }
+    }catch{}
+  }
+
+  // Called by owner-only content mutations after the original save().
+  window.__scriptVaultSyncShared = async function(){
+    if(typeof data === "undefined" || !data || !Array.isArray(data.scripts)) return;
+    syncBusy = true;
+    try{
+      await pushSharedScripts(data.scripts.map(s => {
+        const {favorite, ...sharedFields} = s;
+        return {...sharedFields, favorite:false};
+      }));
+    }catch(err){
+      console.warn("Không thể cập nhật Script Vault chung.", err);
+    }finally{
+      syncBusy = false;
+    }
+  };
+
+  // Make cross-device updates visible quickly.
+  initialSharedLoad();
+  startRealtimeStream();
+  setInterval(pollShared, SHARED_POLL_MS);
+
+  // Expose a small helper for the patched mutation hooks below.
+  window.__scriptVaultSharedReady = () => remoteReady;
+})();
+</script>
+
+</body></html>
